@@ -41,7 +41,11 @@ class OpponentEnv(gym.Env):
         self.opponent = self.pool.sample(self.np_random)
         obs, infos = self.par_env.reset(seed=options[SCENARIO_SEED_KEY], options=options)
         self._opp_obs = obs[self.other]
-        info = {**infos[self.learner], "opponent": self.opponent.name}
+        info = {
+            **infos[self.learner],
+            "opponent": self.opponent.name,
+            SCENARIO_SEED_KEY: options[SCENARIO_SEED_KEY],
+        }
         return obs[self.learner], info
 
     def step(self, action: int) -> tuple[dict[str, np.ndarray], float, bool, bool, dict[str, Any]]:
