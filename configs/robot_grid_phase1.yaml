@@ -1,0 +1,52 @@
+app: apps.robot_grid
+run_name: robot_grid_phase1
+seed: 1
+device: auto
+total_timesteps: 300000
+num_envs: 8
+log_interval: 10
+checkpoint_every: 50
+track_wandb: false
+
+env:
+  height: 8
+  width: 8
+  view_radius: 2
+  terrain_freqs: {soil: 0.5, bedrock: 0.2, sand: 0.2, big_rock: 0.1}
+  energy: 40.0
+  health: 5.0
+  goal_bonus: 10.0
+  energy_cost: 0.01
+  damage_cost: 0.05
+  step_cost: 0.01
+  move_costs:
+    walk_energy: 1.0
+    walk_sand_energy: 2.0
+    walk_sand_damage: 1.0
+    crawl_energy: 2.0
+    climb_energy: 4.0
+    jump_energy: 3.0
+    jump_bedrock_damage: 1.0
+
+encoder:
+  channels: 32
+  window_dim: 128
+  status_dim: 32
+
+policy:
+  hidden_sizes: [128, 128]
+
+ppo:
+  num_steps: 128
+  learning_rate: 2.5e-4
+  gamma: 0.99
+  gae_lambda: 0.95
+  num_minibatches: 4
+  update_epochs: 4
+  clip_coef: 0.2
+  ent_coef: 0.01
+  vf_coef: 0.5
+  max_grad_norm: 0.5
+
+eval:
+  episodes: 500
